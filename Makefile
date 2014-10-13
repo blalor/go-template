@@ -42,7 +42,7 @@ $(GVP): | $(BIN)
 	chmod +x $@
 
 .godeps/.gpm_installed: $(GPM) $(GVP) $(GPM_LINK) Godeps
-	$(GVP) in $(GPM) link add $(PKG_PATH) $(PWD)
+	test -e .godeps/src/$(PKG_PATH) || $(GVP) in $(GPM) link add $(PKG_PATH) $(PWD)
 	$(GVP) in $(GPM) install
 	touch $@
 
