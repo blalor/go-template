@@ -1,0 +1,10 @@
+---
+image: go1.3
+
+script:
+    - make
+
+notify:
+    email:
+        recipients:
+            - blalor@bravo5.org
