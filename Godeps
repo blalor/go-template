@@ -2,21 +2,21 @@
 ## These are a few of my favorite things.
 
 ## prod
-github.com/jessevdk/go-flags 1f8fc78104c465b25629ed0fa9bbd4dffb39dd8e
-github.com/Sirupsen/logrus   89b6d460f0048bd1591d723b483f89b127257dbb
+github.com/jessevdk/go-flags 15347ef417a300349807983f15af9e65cd2e1b3a
+github.com/Sirupsen/logrus   539d4dc034c079a7188b5d4ca9650632d73c66e8
 
 ## test
-github.com/onsi/ginkgo/ginkgo 90d6a472e25d8096739d5405286ec051c87fade7
-github.com/onsi/gomega        3ca2515afb00bc39bc77d27cdbce85a7caaf103e
-github.com/stretchr/testify   de7fcff264cd05cc0c90c509ea789a436a0dd206
+github.com/onsi/ginkgo/ginkgo 17ea479729ee427265ac1e913443018350946ddf
+github.com/onsi/gomega        8adf9e1730c55cdc590de7d49766cb2acc88d8f2
+github.com/stretchr/testify   33a31e5dbed8302d5ab7e6d12b416e95c2c4ebc0
 
 ## test codegen
-github.com/vektra/mockery 5e98d9a4390b6c1c9b9f7d326f438b5c3d01a7fc
+github.com/vektra/mockery 78e40f1402858198c4d99ff25a7bf6f1ad66fd96
 
 ### transitive deps
 ## required by mockery, I think
-github.com/vektra/errors           c64d83aba85aa4392895aadeefabbd24e89f3580
-code.google.com/p/go.tools/imports 7a99b946364f
+github.com/vektra/errors   c64d83aba85aa4392895aadeefabbd24e89f3580
+golang.org/x/tools/imports 39a2d013becdcfa6c1c320818544e27af68cea4c
 
 ## required by testify, I think
 github.com/stretchr/objx cbeaeb16a013161a98496fad62933b1d21786672
