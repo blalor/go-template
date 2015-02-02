@@ -5,7 +5,7 @@ NAME=my-awesome-tool
 PKG_PATH=github.com/blalor/$(NAME)
 
 ## version, taken from Git tag (like v1.0.0) or hash
-VER:=$(shell git describe --always --dirty | sed -e 's/^v//g' )
+VER:=$(shell (git describe --always --dirty 2>/dev/null || echo "¯\\\\\_\\(ツ\\)_/¯") | sed -e 's/^v//g' )
 
 BIN=.godeps/bin
 GPM=$(BIN)/gpm
