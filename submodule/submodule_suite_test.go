@@ -7,7 +7,7 @@ import (
     "testing"
 )
 
-func TestRiemannCli(t *testing.T) {
+func TestSubmodule(t *testing.T) {
     RegisterFailHandler(Fail)
     RunSpecs(t, "Submodule Suite")
 }
