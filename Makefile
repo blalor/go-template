@@ -7,6 +7,11 @@ PKG_PATH=github.com/blalor/$(NAME)
 ## version, taken from Git tag (like v1.0.0) or hash
 VER:=$(shell (git describe --always --dirty 2>/dev/null || echo "¯\\\\\_\\(ツ\\)_/¯") | sed -e 's/^v//g' )
 
+## fully-qualified path to this Makefile
+MKFILE_PATH := $(realpath $(lastword $(MAKEFILE_LIST)))
+## fully-qualified path to the current directory
+CURRENT_DIR := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
+
 BIN=.godeps/bin
 GPM=$(BIN)/gpm
 GPM_LINK=$(BIN)/gpm-link
@@ -14,7 +19,7 @@ GVP=$(BIN)/gvp
 
 ## @todo should use "$(GVP) in", but that fails
 ## all non-test source files
-SOURCES:=$(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e "s@$(PWD)/@@g" )
+SOURCES:=$(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e 's@$(CURRENT_DIR)/@@g' )
 
 .PHONY: all devtools deps test build clean rpm
 
@@ -39,7 +44,7 @@ $(GVP): | $(BIN)
 	chmod +x $@
 
 .godeps/.gpm_installed: $(GPM) $(GVP) $(GPM_LINK) Godeps
-	test -e .godeps/src/$(PKG_PATH) || $(GVP) in $(GPM) link add $(PKG_PATH) $(PWD)
+	test -e .godeps/src/$(PKG_PATH) || $(GVP) in $(GPM) link add $(PKG_PATH) $(CURRENT_DIR)
 	$(GVP) in $(GPM) install
 	touch $@
 
