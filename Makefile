@@ -70,7 +70,7 @@ test: $(BIN)/ginkgo
 ## augh!  gvp shell escaping!!
 ## https://github.com/pote/gvp/issues/22
 stage/$(NAME): .godeps/.gpm_installed $(SOURCES) | stage
-	$(GVP) in go build -o $@ -ldflags '-X\ main.version\ $(VER)' -v .
+	$(GVP) in go build -o $@ -ldflags '-X\ main.version=$(VER)' -v .
 
 ## same, but shorter
 build: test stage/$(NAME)
