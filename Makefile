@@ -32,7 +32,7 @@ $(BIN) stage:
 	mkdir -p $@
 
 $(GPM): | $(BIN)
-	curl -s -L -o $@ https://github.com/pote/gpm/raw/v1.3.1/bin/gpm
+	curl -s -L -o $@ https://github.com/pote/gpm/raw/v1.3.2/bin/gpm
 	chmod +x $@
 
 $(GPM_LINK): | $(BIN)
