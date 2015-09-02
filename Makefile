@@ -16,9 +16,6 @@ GVP=$(BIN)/gvp
 ## all non-test source files
 SOURCES:=$(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e "s@$(PWD)/@@g" )
 
-## all packages in this prject
-PACKAGES:=$(shell go list -f '{{.Name}}' ./... )
-
 .PHONY: all devtools deps test build clean rpm
 
 ## targets after a | are order-only; the presence of the target is sufficient
@@ -62,7 +59,7 @@ deps: .godeps/.gpm_installed
 
 ## run tests
 test: $(BIN)/ginkgo
-	$(GVP) in $(BIN)/ginkgo $(PACKAGES)
+	$(GVP) in $(BIN)/ginkgo -r
 
 ## build the binary
 ## augh!  gvp shell escaping!!
