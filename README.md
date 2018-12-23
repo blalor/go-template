@@ -1,18 +1,14 @@
 # An opinionated template for Go projects
 
-Fully isolated from other Go environments with
-[gvp](https://github.com/pote/gvp) and manages dependencies with
-[gpm](https://github.com/pote/gpm).  These seem to be a reasonable alternative
-until Go gets its act together regarding dependency management.
+Fully isolated from other Go environments with [Go Modules](https://github.com/golang/go/wiki/Modules).
 
 ## setup
 
 0. Bootstrap your project:  
 `curl -L -s https://github.com/blalor/go-template/archive/master.tar.gz | tar -xz --strip-components=1`
-1. Set `NAME` and `PKG_PATH` in `Makefile`.
-2. Write tests
-3. Write code
-4. Profit
+1. Write tests
+2. Write code
+3. Profit
 
 ## `make` targets
 
@@ -22,7 +18,7 @@ until Go gets its act together regarding dependency management.
 ## features
 
 * [go-flags](https://github.com/jessevdk/go-flags) for command-line option parsing
-* [logrus](https://github.com/Sirupsen/logrus) for logging (because `log` is too simplistic)
+* [logrus](https://github.com/sirupsen/logrus) for logging (because `log` is too simplistic)
 * [ginkgo](https://github.com/onsi/ginkgo/ginkgo) for BDD tests
 * [testify](https://github.com/stretchr/testify) for mocks, which isn't great, but is better than nothing
 
