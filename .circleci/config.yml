@@ -1,0 +1,25 @@
+---
+version: 2
+
+references:
+    cache:
+        gomod: &GOMOD_CACHE_KEY v1-dependencies-{{ checksum "go.mod" }}-{{ checksum "go.sum" }}
+
+jobs:
+    build:
+        docker:
+            - image: circleci/golang:1.12 ## latest in 1.12 series
+
+        steps:
+            - checkout
+
+            - restore_cache:
+                keys:
+                    - *GOMOD_CACHE_KEY
+
+            - run: make
+
+            - save_cache:
+                key: *GOMOD_CACHE_KEY
+                paths:
+                    - /go/pkg
