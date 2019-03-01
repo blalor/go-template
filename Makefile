@@ -12,7 +12,7 @@ CURRENT_DIR := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 BIN = .godeps/bin
 
 GO_MOD_SOURCES := go.mod go.sum
-SOURCES := $(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e 's@$(CURRENT_DIR)/@@g' ) go.mod
+SOURCES := $(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e 's@$(CURRENT_DIR)/@@g' )
 TEST_SOURCES := $(shell go list -f '{{range .TestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} {{range .XTestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} ' ./... | sed -e 's@$(CURRENT_DIR)/@@g')
 
 ## targets after a | are order-only; the presence of the target is sufficient
@@ -20,6 +20,11 @@ TEST_SOURCES := $(shell go list -f '{{range .TestGoFiles}}{{ $$.Dir }}/{{.}} {{e
 
 .PHONY: all
 all: build
+
+## duh
+.PHONY: clean
+clean:
+	git clean -f -Xd
 
 $(BIN) stage:
 	@mkdir -p $@
@@ -44,6 +49,10 @@ stage/.tests_ran: $(GO_MOD_SOURCES) $(TEST_SOURCES) $(SOURCES) $(BIN)/ginkgo | s
 .PHONY: test
 test: stage/.tests_ran
 
+.PHONY: watch-tests
+watch-tests: $(GINKGO)
+	@$(GINKGO) watch -r
+
 ## build the binary
 stage/$(NAME): $(GO_MOD_SOURCES) $(SOURCES) | stage
 	go build -o $@ -ldflags '-X main.version=$(VER)' -v .
@@ -51,27 +60,3 @@ stage/$(NAME): $(GO_MOD_SOURCES) $(SOURCES) | stage
 ## same, but shorter
 .PHONY: build
 build: test stage/$(NAME)
-
-## duh
-.PHONY: clean
-clean:
-	rm -rf stage .godeps release
-
-.PHONY: rpm
-rpm: build
-	mkdir -p stage/rpm/usr/bin stage/rpm/etc
-
-	cp stage/$(NAME) stage/rpm/usr/bin/
-	chmod 555 stage/rpm/usr/bin/$(NAME)
-
-	## config files
-	cp etc/* stage/rpm/etc/
-
-	cd stage && fpm \
-	    -s dir \
-	    -t rpm \
-	    -n $(NAME) \
-	    -v $(VER) \
-	    --rpm-use-file-permissions \
-	    -C rpm \
-	    etc usr
