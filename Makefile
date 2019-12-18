@@ -12,8 +12,8 @@ CURRENT_DIR := $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 BIN = .godeps/bin
 
 GO_MOD_SOURCES := go.mod go.sum
-SOURCES := $(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e 's@$(CURRENT_DIR)/@@g' )
-TEST_SOURCES := $(shell go list -f '{{range .TestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} {{range .XTestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} ' ./... | sed -e 's@$(CURRENT_DIR)/@@g')
+SOURCES := $(GO_MOD_SOURCES) $(shell go list -f '{{range .GoFiles}}{{ $$.Dir }}/{{.}} {{end}}' ./... | sed -e 's@$(CURRENT_DIR)/@@g' )
+TEST_SOURCES := $(GO_MOD_SOURCES) $(shell go list -f '{{range .TestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} {{range .XTestGoFiles}}{{ $$.Dir }}/{{.}} {{end}} ' ./... | sed -e 's@$(CURRENT_DIR)/@@g')
 
 ## targets after a | are order-only; the presence of the target is sufficient
 ## http://stackoverflow.com/questions/4248300/in-a-makefile-is-a-directory-name-a-phony-target-or-real-target
@@ -42,7 +42,7 @@ $(BIN)/mockery: $(GO_MOD_SOURCES) | $(BIN)
 devtools: $(BIN)/ginkgo $(BIN)/mockery
 
 ## run tests
-stage/.tests_ran: $(GO_MOD_SOURCES) $(TEST_SOURCES) $(SOURCES) $(BIN)/ginkgo | stage
+stage/.tests_ran: $(TEST_SOURCES) $(SOURCES) $(BIN)/ginkgo | stage
 	$(BIN)/ginkgo -r
 	@touch $@
 
@@ -54,9 +54,9 @@ watch-tests: $(GINKGO)
 	@$(GINKGO) watch -r
 
 ## build the binary
-stage/$(NAME): $(GO_MOD_SOURCES) $(SOURCES) | stage
+stage/$(NAME): $(SOURCES) | stage test
 	go build -o $@ -ldflags '-X main.version=$(VER)' -v .
 
 ## same, but shorter
 .PHONY: build
-build: test stage/$(NAME)
+build: stage/$(NAME)
